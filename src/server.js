@@ -2,7 +2,7 @@ import express from "express"
 import cors from "cors"
 import listEndpoints from "express-list-endpoints"
 import { pgConnect, syncModels } from "./db.js"
-import usersRouter from "./api/users/index.js"
+import productsRouter from "./api/products/index.js"
 import {
   badRequestErrorHandler,
   forbiddenErrorHandler,
@@ -19,7 +19,7 @@ server.use(cors())
 server.use(express.json())
 
 // ********************************** ENDPOINTS ****************************************
-server.use("/products", usersRouter)
+server.use("/products", productsRouter)
 
 // ******************************* ERROR HANDLERS **************************************
 server.use(badRequestErrorHandler)
