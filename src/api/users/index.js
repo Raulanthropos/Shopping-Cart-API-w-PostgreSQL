@@ -23,10 +23,10 @@ productsRouter.get("/", async (req, res, next) => {
     if (req.query.price_gte) query.price = { [Op.gte]: `${req.query.price_gte}` }
     if (req.query.price_lt) query.price = { [Op.lt]: `${req.query.price_lt}` }
     if (req.query.price_lte) query.price = { [Op.lte]: `${req.query.price_lte}` }
-    const products = await ProductsModel.findAll({
+    const products = await ProductsModel.findAndCountAll({
       where: { ...query },
       attributes: ["name", "category", "description", "price"],
-    }) // (SELECT) pass an array for the include list
+    })
     res.send(products)
   } catch (error) {
     next(error)
