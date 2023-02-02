@@ -1,10 +1,12 @@
-import { ValidationError } from "sequelize"
+import { ValidationError, ForeignKeyConstraintError } from "sequelize"
 
 export const badRequestErrorHandler = (err, req, res, next) => {
   if (err.status === 400) {
     res.status(400).send({ success: false, message: err.message })
   } else if (err instanceof ValidationError) {
     res.status(400).send({ success: false, message: err.errors.map(e => e.message) })
+  } else if (err instanceof ForeignKeyConstraintError) {
+    res.status(400).send({ success: false, message: err.message })
   } else {
     next(err)
   }

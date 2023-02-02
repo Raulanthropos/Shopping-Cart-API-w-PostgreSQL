@@ -1,45 +1,45 @@
-import { DataTypes } from "sequelize"
-import sequelize from "../../db.js"
+import { DataTypes } from "sequelize";
+import sequelize from "../../db.js";
+import CategoriesModel from "../categories/model.js";
+import ProductsCategoryModel from "./productsCategoryModel.js";
 
-const ProductsModel = sequelize.define(
-  "product",
-  {
-    id: {
-      type: DataTypes.UUID,
-      primaryKey: true,
-      defaultValue: DataTypes.UUIDV4,
-    },
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    category: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    description: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    image: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    price: {
-        type: DataTypes.FLOAT,
+const ProductModel = sequelize.define("product", {
+  id: {
+    type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4,
+    primaryKey: true,
+  },
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  description: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  image: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  price: {
+    type: DataTypes.FLOAT,
+    allowNull: false,
+  },
+});
+
+ProductModel.belongsToMany(CategoriesModel, {
+    through: ProductsCategoryModel,
+    foreignKey: {
+        name: "productId",
         allowNull: false
     },
-    createdAt: {
-        type: DataTypes.DATE,
-        allowNull: false
-    },
-    updatedAt: {
-        type: DataTypes.DATE,
-        defaultValue: DataTypes.NOW,
+})
+CategoriesModel.belongsToMany(ProductModel, {
+    through: ProductsCategoryModel,
+    foreignKey: {
+        name: "categoryId",
         allowNull: false
     }
-  }
+})
 
-)
-
-export default ProductsModel;
+export default ProductModel
